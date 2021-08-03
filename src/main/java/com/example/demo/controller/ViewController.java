@@ -14,9 +14,13 @@ import com.example.demo.mapSvc.MapService;
 
 @Controller
 public class ViewController {
-	@Autowired
 	private MapService mapServices;
 	
+	public ViewController(MapService mapServices) {
+		super();
+		this.mapServices = mapServices;
+	}
+
 	@GetMapping("/mainService")
 	public String mainServivePg(@ModelAttribute Place place, Model model) {
 		
