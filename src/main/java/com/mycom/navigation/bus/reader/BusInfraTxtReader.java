@@ -1,6 +1,7 @@
 package com.mycom.navigation.bus.reader;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,18 +20,25 @@ import org.apache.commons.collections4.map.MultiKeyMap;
  *   
  * */
 public class BusInfraTxtReader implements BusInfraReader{
-
+	private File stations;
+	private File edges;
+	
+	public BusInfraTxtReader(File stations, File edges) {
+		super();
+		this.stations = stations;
+		this.edges = edges;
+	}
 	public List<String[]> readExternalBusData() {
 		List<String[]> busStopByRoute = new ArrayList<String[]>();
 		try {
-			FileInputStream busStopByRouteFile = new FileInputStream("C:/workspace/practice/ReadExcelFile/Stations.txt");
+			FileInputStream busStopByRouteFile = new FileInputStream(stations);
 			BufferedReader br = new BufferedReader(new InputStreamReader(busStopByRouteFile));
 			String line = null;
 			while((line = br.readLine())!= null) { // EoF
 				String[] infs = line.split("\t");
 				busStopByRoute.add(infs);
 			}
-			busStopByRouteFile.close();
+			br.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -42,7 +50,7 @@ public class BusInfraTxtReader implements BusInfraReader{
 		FileInputStream file;
 		 MultiKeyMap<String, String> map = new MultiKeyMap<String, String>();
 		try {
-			file = new FileInputStream("C:/workspace/practice/ReadExcelFile/EdgeData.txt");
+			file = new FileInputStream(edges);
 			BufferedReader br = new BufferedReader(new InputStreamReader(file));
 			String line = null;
 			while((line = br.readLine())!= null) { // EoF
