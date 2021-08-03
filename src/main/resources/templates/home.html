@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<title>간단한 지도 표시하기</title>
+<script type="text/javascript"
+	src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=butimsrvsd"></script>
+</head>
+<body>
+	<form action="main" method="get" >
+		이름 : <input type="text" name="user"/><br>
+		출발지 x좌표 : <input type="text" name="sx"><br>
+		출발지 y좌표 : <input type="text" name="sy"><br>
+		도착지 x좌표 : <input type="text" name="ex"><br>
+		도착지 y좌표 : <input type="text" name="ey"><br>
+		<input type="submit" value="다음"/>
+	</form>
+</body>
+</html>
