@@ -7,5 +7,5 @@ import org.apache.commons.collections4.map.MultiKeyMap;
 
 public interface BusInfraReader {
 	public List<String[]> readExternalBusData();
-	public MultiKeyMap<String, String> loadRealPath();
+	public MultiKeyMap<String, List<Double[]>> loadRealPath();
 }

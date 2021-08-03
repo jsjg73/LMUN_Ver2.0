@@ -12,6 +12,6 @@ public abstract class Navigator {
 		this.infrastructure = infrastructure;
 	}
 	
-	public abstract List<String> navigate(double sx, double sy, double ex, double ey);
+	public abstract List<Double[]> navigate(double sx, double sy, double ex, double ey);
 	
 }

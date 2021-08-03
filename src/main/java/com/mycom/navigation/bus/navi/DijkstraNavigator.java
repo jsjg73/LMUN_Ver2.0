@@ -18,7 +18,7 @@ public class DijkstraNavigator extends Navigator {
 	}
 
 	@Override
-	public List<String> navigate(double sx, double sy, double ex, double ey) {
+	public List<Double[]> navigate(double sx, double sy, double ex, double ey) {
 		List<InfraNode> optimizedRoute = navigateByDijkstra(sx, sy, ex, ey);
 		return realPathsBetweenNodes(optimizedRoute);
 	}
@@ -110,13 +110,15 @@ public class DijkstraNavigator extends Navigator {
 		return pq;
 	}
 
-	private List<String> realPathsBetweenNodes(List<InfraNode> optimizedRoute) {
-		List<String> realPaths = new ArrayList<String>();
+	private List<Double[]> realPathsBetweenNodes(List<InfraNode> optimizedRoute) {
+		List<Double[]> realPaths = new ArrayList<Double[]>();
 		for (int i = optimizedRoute.size() - 1; i > 0; i--) {
 			InfraNode pre = optimizedRoute.get(i);
 			InfraNode next = optimizedRoute.get(i - 1);
-			String realPath = pre.getRealPathTo(next);
-			realPaths.add(realPath);
+			List<Double[]> realPath = pre.getRealPathTo(next);
+			if(realPath != null) {
+				realPaths.addAll(realPath);
+			}
 		}
 
 		return realPaths;

@@ -3,6 +3,7 @@ package com.mycom.navigation.infra;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class InfraNode {
 		this.nodeId = nodeId;
 	}
 	
-	public void addNextNode(InfraNode node, int cost, String realPath) {
+	public void addNextNode(InfraNode node, int cost, List<Double[]> realPath) {
 		if(node == null)return;
 		if(nexts == null)nexts = new HashMap<InfraNode, InfraEdge>();
 		InfraEdge edge = nexts.get(node);
@@ -37,7 +38,7 @@ public class InfraNode {
 		}
 	}
 	
-	public String findRealpath(InfraNode next) {
+	public List<Double[]> findRealpath(InfraNode next) {
 		return nexts.get(next).getRealPath();
 	}
 	public Iterator<Map.Entry<InfraNode, InfraEdge>> nextsIterator() {
@@ -45,7 +46,7 @@ public class InfraNode {
 		return nexts.entrySet().iterator();
 	}
 
-	public String getRealPathTo(InfraNode next) {
+	public List<Double[]> getRealPathTo(InfraNode next) {
 		return nexts.get(next).getRealPath();
 	};
 	public boolean connected(InfraNode node) {

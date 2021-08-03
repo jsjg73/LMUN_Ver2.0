@@ -46,21 +46,31 @@ public class BusInfraTxtReader implements BusInfraReader{
 		}
 		return busStopByRoute;
 	}
-	public MultiKeyMap<String, String> loadRealPath() {
+	public MultiKeyMap<String, List<Double[]>> loadRealPath() {
 		FileInputStream file;
-		 MultiKeyMap<String, String> map = new MultiKeyMap<String, String>();
+		 MultiKeyMap<String, List<Double[]>> map = new MultiKeyMap<String, List<Double[]>>();
 		try {
 			file = new FileInputStream(edges);
 			BufferedReader br = new BufferedReader(new InputStreamReader(file));
 			String line = null;
 			while((line = br.readLine())!= null) { // EoF
 				String[] infs = line.split("\t");
-				map.put(infs[0], infs[1], infs[2]);
+				List<Double[]> realPath = converter(infs[2]);
+				map.put(infs[0], infs[1], realPath);
 			}
 			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return map;
+	}
+	private List<Double[]> converter(String input) {
+		String[] arr = input.replaceAll("[\\[\\]]", "").split(",");
+		List<Double[]> list = new ArrayList<Double[]>();
+		for(int i=0; i<arr.length; i+=2) {
+			Double[] doubles = {Double.parseDouble(arr[i]), Double.parseDouble(arr[i+1])};
+			list.add(doubles);
+		}
+		return list;
 	}
 }

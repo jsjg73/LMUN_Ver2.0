@@ -1,5 +1,6 @@
 package com.mycom.navigation.bus.factory;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -43,7 +44,7 @@ public class BusInfraFactory {
 		}
 	}
 	private List<String[]> busNodesFromExternalData;
-	private MultiKeyMap<String, String> realPathsBetweenNodes;
+	private MultiKeyMap<String, List<Double[]>> realPathsBetweenNodes;
 	public void construct() {
 		
 		readExternalBusInformation();
@@ -109,7 +110,7 @@ public class BusInfraFactory {
 	}
 	
 	private int weight =1;
-	private String realPath = null ;
+	private List<Double[]> realPath = new ArrayList<Double[]>() ;
 	private BusNode previousNode = null;
 	private BusNode currentNode = null;
 	
@@ -132,10 +133,10 @@ public class BusInfraFactory {
 	}
 	
 	private void updateRealPath() {
-		String currRealPath =realPathsBetweenNodes.get(previousNode.getNodeId(), currentNode.getNodeId());
-		if(realPath !=  null) 
-			realPath +=",";
-		realPath += currRealPath;
+		List<Double[]> currRealPath =realPathsBetweenNodes.get(previousNode.getNodeId(), currentNode.getNodeId());
+		if(currRealPath != null) {
+			realPath.addAll(currRealPath);
+		}
 	}
 	
 	//TODO 부수효과 제거
@@ -148,7 +149,7 @@ public class BusInfraFactory {
 			previousNode.addNextNode(currentNode, weight, realPath);
 			previousNode = currentNode;
 			weight = 1;
-			realPath = null;
+			realPath = new ArrayList<Double[]>();
 		}
 	}
 
@@ -164,7 +165,7 @@ public class BusInfraFactory {
 		Set<InfraNode> nodesNearbyCurr = busInfra.nodesNearby(curr.getX(), curr.getY());
 		for(InfraNode node : nodesNearbyCurr) {
 			if(curr.connected(node))continue;
-			curr.addNextNode(node, WEIGHT_FOR_WALKING, "");
+			curr.addNextNode(node, WEIGHT_FOR_WALKING, null);
 		}
 	}
 

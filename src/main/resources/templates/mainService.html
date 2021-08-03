@@ -134,7 +134,7 @@ h1, h2, h3, h4, h5, h6 {
 		    		path
 		    	),
 		    contentType: "application/json",
-		    dataType:'text', 
+		    dataType:'json', 
 		    success: function(data){
 		    			    	
 		    	//경로 그릴 좌표 배열 데이터 : data
@@ -210,14 +210,27 @@ h1, h2, h3, h4, h5, h6 {
 
   // update layout or load layout;
   function updateMap(data, k){
+	 var geoJson = {
+  		"type" : "FeatureCollection",
+  		"features" : []
+  	};
+  	for(var i=0; i<data.length; i++){
+  		var coordinates = data[i];
+  		
+  		var feature ={
+  	  			"type" : "Feature",
+  	  			"geometry" : {
+  	  				"type" : "LineString",
+  	  				"coordinates" : coordinates
+  	  			}
+  	  	};
+  		geoJson.features.push(feature);
+  	}
   	
-  	var coordinates = parsingToFloatArray(data);
-  	var geojson = createGeoJSON(coordinates);
-  	
-  	arrGeojson[k] = geojson;
+  	arrGeojson[k] = geoJson;
   	visit[k]=true;
   	
-  	changeMap(geojson);
+  	changeMap(geoJson);
   }
 
   function parsingToFloatArray(realPath){
@@ -233,10 +246,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   function createGeoJSON(coordinates){
-  	var geoJson = {
-  		"type" : "FeatureCollection",
-  		"features" : []
-  	};
+  	
   	geoJson.features.push(createFeature(coordinates));
   	return geoJson;
   }
