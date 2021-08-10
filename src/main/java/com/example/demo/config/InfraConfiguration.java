@@ -11,6 +11,7 @@ import com.mycom.navigation.bus.factory.BusInfra;
 import com.mycom.navigation.bus.factory.BusInfraFactory;
 import com.mycom.navigation.bus.reader.BusInfraReader;
 import com.mycom.navigation.bus.reader.BusInfraTxtReader;
+import com.mycom.navigation.infra.Infrastructure;
 
 @Configuration
 public class InfraConfiguration {
@@ -22,12 +23,11 @@ public class InfraConfiguration {
 	Resource busEdgeResource;
 	
 	@Bean
-	public BusInfra businfra() throws IOException{
+	public Infrastructure businfra() throws IOException{
 		BusInfraReader bifReader = new BusInfraTxtReader(
 				busStationResource.getFile(),
 				busEdgeResource.getFile()
 				);
-		BusInfra bif =  new BusInfraFactory(bifReader).createOnlyOnce();
-		return bif;
+		return new BusInfraFactory(bifReader).getInfraInstance();
 	}
 }
