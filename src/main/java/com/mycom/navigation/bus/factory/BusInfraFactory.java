@@ -14,38 +14,32 @@ import com.mycom.navigation.bus.dto.BusNode;
 import com.mycom.navigation.bus.reader.BusInfraReader;
 import com.mycom.navigation.bus.section.BusSection;
 import com.mycom.navigation.infra.InfraNode;
+import com.mycom.navigation.infra.Infrastructure;
+import com.mycom.navigation.infra.factory.InfraFactory;
 
-public class BusInfraFactory {
-	private volatile static BusInfra busInfra;
+public class BusInfraFactory extends InfraFactory{
+	
 	/*
 	 * infs[] { 노선ID, 노선명, 순번, NODE_ID, ARS-ID, 정류소명, X좌표, Y좌표 }
 	 */
 	private final int BUS_ID = 0, BUS_NM = 1, ORDER = 2, NODE_ID = 3, ARS_ID = 4, STATION_NM = 5, X = 6, Y = 7;
 	private final int WEIGHT_NON_STOP=6, WEIGHT_FOR_WALKING=3 ;
 	
+	private BusInfra busInfra;
+	
 	private BusInfraReader reader;
 	public BusInfraFactory(BusInfraReader reader) {
 		this.reader = reader;
 	}
 	
-	public BusInfra createOnlyOnce() {
-		if(busInfra==null) {
-			initiateOnlyOnce();
-		}
-		return busInfra;
+	@Override
+	protected Infrastructure createInstance() {
+		return BusInfra.create();
 	}
-	
-	private void initiateOnlyOnce() {
-		synchronized (BusInfraFactory.class) {
-			if(busInfra==null) {
-				busInfra = BusInfra.create();
-				construct();
-			}
-		}
-	}
-	private List<String[]> busNodesFromExternalData;
-	private MultiKeyMap<String, List<Double[]>> realPathsBetweenNodes;
-	public void construct() {
+
+	@Override
+	protected void initialize() {
+		busInfra = (BusInfra) instance;
 		
 		readExternalBusInformation();
 		
@@ -58,6 +52,9 @@ public class BusInfraFactory {
 		transferOnFootIterating();
 		
 	}
+	
+	private List<String[]> busNodesFromExternalData;
+	private MultiKeyMap<String, List<Double[]>> realPathsBetweenNodes;
 	
 	private void readExternalBusInformation() {
 		busNodesFromExternalData = reader.readExternalBusData();
@@ -175,6 +172,5 @@ public class BusInfraFactory {
 		busInfra.setSection(section);
 	}
 
-	
 
 }
