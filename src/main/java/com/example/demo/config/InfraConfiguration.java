@@ -25,8 +25,8 @@ public class InfraConfiguration {
 	@Bean
 	public Infrastructure businfra() throws IOException{
 		BusInfraReader bifReader = new BusInfraTxtReader(
-				busStationResource.getFile(),
-				busEdgeResource.getFile()
+				busStationResource.getInputStream(),
+				busEdgeResource.getInputStream()
 				);
 		return new BusInfraFactory(bifReader).getInfraInstance();
 	}

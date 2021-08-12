@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +21,18 @@ import org.apache.commons.collections4.map.MultiKeyMap;
  *   
  * */
 public class BusInfraTxtReader implements BusInfraReader{
-	private File stations;
-	private File edges;
+	private InputStream stations;
+	private InputStream edges;
 	
-	public BusInfraTxtReader(File stations, File edges) {
+	public BusInfraTxtReader(InputStream inputStream, InputStream inputStream2) {
 		super();
-		this.stations = stations;
-		this.edges = edges;
+		this.stations = inputStream;
+		this.edges = inputStream2;
 	}
 	public List<String[]> readExternalBusData() {
 		List<String[]> busStopByRoute = new ArrayList<String[]>();
 		try {
-			FileInputStream busStopByRouteFile = new FileInputStream(stations);
-			BufferedReader br = new BufferedReader(new InputStreamReader(busStopByRouteFile));
+			BufferedReader br = new BufferedReader(new InputStreamReader(stations));
 			String line = null;
 			while((line = br.readLine())!= null) { // EoF
 				String[] infs = line.split("\t");
@@ -47,11 +47,9 @@ public class BusInfraTxtReader implements BusInfraReader{
 		return busStopByRoute;
 	}
 	public MultiKeyMap<String, List<Double[]>> loadRealPath() {
-		FileInputStream file;
 		 MultiKeyMap<String, List<Double[]>> map = new MultiKeyMap<String, List<Double[]>>();
 		try {
-			file = new FileInputStream(edges);
-			BufferedReader br = new BufferedReader(new InputStreamReader(file));
+			BufferedReader br = new BufferedReader(new InputStreamReader(edges));
 			String line = null;
 			while((line = br.readLine())!= null) { // EoF
 				String[] infs = line.split("\t");
